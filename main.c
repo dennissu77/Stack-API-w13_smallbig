@@ -28,12 +28,13 @@ int main (void)
             scanf("%d", &id);
 
             ret = enqueue_node(queue, id, score, (operation == 1 ? TYPE_SMALL : TYPE_LARGE));
-          
+
+            //ret是fleg用來測試enqueue_node有沒有成功
             if (ret == 0)
             {
                 printf("    Cannot enter to the queue\n");
             }
-            print_buffer_status();
+            print_buffer_status();//印出mask表示的抽象空間佔用狀態
         }
         else if (operation == 3 || operation == 4)
         {
