@@ -30,13 +30,13 @@ void our_malloc(int type, void **target, int *mem_location)
         location = test_single_location(byte_buf_mask, NUM_BYTE_BUF);//找出small的空格並回傳位址  從mask的角度
         if (location >= 0) {//如果有回傳位址 不是回傳-1的話
             set_single_bit(&byte_buf_mask, location);//傳址呼叫byte_buf_mask
-            *target = &buffer[location * ELEMENT_SIZE];
-            *mem_location = location;
+            *target = &buffer[location * ELEMENT_SIZE];//把在陣列中實際的記憶體位址的位置給到target 雙指標所以會影響函數外的結果
+            *mem_location = location;//mem_location  是抽象化後的mask位址
         } else {
             return;
         }
-    } else if (type == TYPE_LARGE) {
-        location = test_dual_location(byte_buf_mask, NUM_BYTE_BUF);
+    } else if (type == TYPE_LARGE) {// 如果是需要分類large的空間
+        location = test_dual_location(byte_buf_mask, NUM_BYTE_BUF);//測試mask 要找到連續的兩個空位
         if (location >= 0) {
             set_dual_bit(&byte_buf_mask, location);
             *target = &buffer[location * ELEMENT_SIZE];
