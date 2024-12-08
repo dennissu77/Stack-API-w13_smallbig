@@ -38,9 +38,9 @@ void our_malloc(int type, void **target, int *mem_location)
     } else if (type == TYPE_LARGE) {// 如果是需要分類large的空間
         location = test_dual_location(byte_buf_mask, NUM_BYTE_BUF);//測試mask 要找到連續的兩個空位
         if (location >= 0) {
-            set_dual_bit(&byte_buf_mask, location);
-            *target = &buffer[location * ELEMENT_SIZE];
-            *mem_location = location;
+            set_dual_bit(&byte_buf_mask, location);//改變mask標記要使用的兩個抽象位置爲1
+            *target = &buffer[location * ELEMENT_SIZE];//回傳實際上要使用的buffer位址
+            *mem_location = location;//回傳使用的抽象mask位址
         } else {
             return;
         }
@@ -87,14 +87,16 @@ void set_dual_bit(unsigned char *mask, int location)
 
 }
 
+// 清除對應位元
 void clear_single_bit(unsigned char *mask, int location)
 {
-    *mask &= ~(1 << location);  // 清除對應位元
+    *mask &= ~(1 << location);  //把特定的bit清成0
 }
 
+// 清除連續兩個位元
 void clear_dual_bit(unsigned char *mask, int location)
 {
-    *mask &= ~((1 << location) | (1 << (location + 1)));  // 清除連續兩個位元
+    *mask &= ~((1 << location) | (1 << (location + 1)));  
 }
 
 void our_free(int type, int mem_location)
