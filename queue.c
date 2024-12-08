@@ -18,19 +18,6 @@ tQueue* createQueue(void){
 
 int enqueue_node(tQueue *queue, int id, int score, int data_type)
 {
-    // tQueueNode *newptr = NULL;
-    // int mem_location;
-
-    // our_malloc ( .......... );
-    
-    // if (newptr == NULL)
-    // {
-    //     printf("    Enqueue False!!! \n");
-    //     return 0;
-    // }
-    
-    // return 1;
-
     tQueueNode *newptr = NULL;
     int mem_location;
 
@@ -97,19 +84,10 @@ void dequeue_node(tQueue *queue, tQueueNode *target, int data_type)
     // 釋放節點結構本身的記憶體
     //free(target);
 
-
-    // queue->count--;
-    // our_free(data_type, target->location);
 }
 
 tQueueNode *find_target_node(tQueue *queue, int id, int data_type)
 {
-    // int i;
-    // tQueueNode *target = queue->front;
-
-    // return NULL;
-
-
     tQueueNode *target = queue->front;
 
     while (target != NULL) {
