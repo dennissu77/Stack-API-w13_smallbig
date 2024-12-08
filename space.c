@@ -3,6 +3,7 @@
 unsigned char buffer[ELEMENT_SIZE*NUM_BYTE_BUF];
 unsigned char byte_buf_mask = 0;
 
+//印出buffer的01佔用狀態
 void print_buffer_status (void)
 {
     int i;
@@ -20,43 +21,15 @@ void print_buffer_status (void)
 
 void our_malloc(int type, void **target, int *mem_location)
 {
-    // int location;
-
-    // if (byte_buf_mask == FULL){//代表buffer已滿 無法分配
-    //     return;
-    // }
-    // else if (type == TYPE_SMALL)
-    // {
-    //     // location = test_single_location( ............ );//byte_buf_mask
-    //     // set_single_bit(.............);
-    //     // *target = .............. ;
-    //     // *mem_location = location;
-    // }
-    // else
-    // {
-
-    //     // location = test_dual_location(............. );
-    //     // if (location >= 0)
-    //     // {
-    //     //     set_dual_bit( .......... );
-
-
-    //     // }
-    //     // else
-    //     // {
-    //     //     return;
-    //     // }
-    // }    
-
-        int location;
+    int location;
 
     if (byte_buf_mask == FULL) {  // buffer 已滿
         return;
     }
-    if (type == TYPE_SMALL) {
-        location = test_single_location(byte_buf_mask, NUM_BYTE_BUF);
-        if (location >= 0) {
-            set_single_bit(&byte_buf_mask, location);
+    if (type == TYPE_SMALL) {// 如果是需要分類small的空間
+        location = test_single_location(byte_buf_mask, NUM_BYTE_BUF);//找出small的空格並回傳位址  從mask的角度
+        if (location >= 0) {//如果有回傳位址 不是回傳-1的話
+            set_single_bit(&byte_buf_mask, location);//傳址呼叫byte_buf_mask
             *target = &buffer[location * ELEMENT_SIZE];
             *mem_location = location;
         } else {
@@ -74,20 +47,20 @@ void our_malloc(int type, void **target, int *mem_location)
     }
 }
 
-//找出small空格
+//找出small空格  用查byte_buf_mask的方式
 int test_single_location(unsigned char mask, int mask_length)
 {
-    
-    //printf("TTT\n");
+    //便歴byte_buf_mask 的mask直到找到(0)位址，也就是空位址
     for (int i = 0; i < mask_length; i++) {
         if (!(mask & (1 << i))) {
-            return i;  // 找到可用位置
+            return i;  // 找到可用位置 回傳移動的步數,等於回傳第幾個位址才是可用位址
         }
     }
     return -1;  // 無可用位置
 
 
 }
+
 
 //設定記憶體使用狀態
 void set_single_bit(unsigned char *mask, int location)
