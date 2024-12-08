@@ -3,6 +3,9 @@
 unsigned char buffer[ELEMENT_SIZE*NUM_BYTE_BUF];
 unsigned char byte_buf_mask = 0;
 
+//此程式使用很多傳址呼叫方法
+
+
 //印出buffer的01佔用狀態
 void print_buffer_status (void)
 {
@@ -107,7 +110,7 @@ void our_free(int type, int mem_location)
             printf("Invalid memory location for TYPE_SMALL: %d\n", mem_location);
             return;
         }
-        // 清除對應位元
+        // 清除對應位元   傳入表示抽象記憶體使用的mask和要清除的相對位址
         clear_single_bit(&byte_buf_mask, mem_location);
     } else if (type == TYPE_LARGE) {
         // 確保 mem_location 在有效範圍內
